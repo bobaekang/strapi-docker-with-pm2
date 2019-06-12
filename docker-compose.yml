@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  api:
+    build: .
+    image: bobaekang/strapi:pm2
+    environment:
+      - APP_NAME=strapi-app
+      - DATABASE_CLIENT=mongo
+      - DATABASE_HOST=db
+      - DATABASE_PORT=27017
+      - DATABASE_NAME=strapi
+      - DATABASE_USERNAME=
+      - DATABASE_PASSWORD=
+      - DATABASE_SSL=false
+      - DATABASE_AUTHENTICATION_DATABASE=strapi
+      - HOST=localhost
+    ports:
+      - 1337:1337
+      - 1338:1338
+      - 1339:1339
+    volumes:
+      - strapi-app:/usr/src/api/strapi-app
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=strapi
+    ports:
+      - 27017:27017
+    volumes:
+      - db-data:/data/db
+    restart: always
+
+volumes:
+  strapi-app:
+  db-data:
